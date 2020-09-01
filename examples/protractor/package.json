@@ -1,0 +1,14 @@
+{
+  "name": "protractor-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node specsSelector.js && protractor conf.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "protractor": "7.0.0"
+  }
+}
