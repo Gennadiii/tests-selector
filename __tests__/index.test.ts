@@ -7,8 +7,8 @@ import {selectTestsHelper} from "../src/helpers/selectTests.helper";
 
 
 const config = {
-  tempDataPath: `${process.cwd()}/dist`,
-  specsPath: `${process.cwd()}/dist/specs`,
+  tempDataPath: `${process.cwd()}/.testsSelector`,
+  specsPath: `${process.cwd()}/.testsSelector/specs`,
   selectedTestsFileName: `selectedTests.generated`,
   featureChoiceNumberFileName: `featureChoiceNumber.indexHelper`,
   testChoiceNumberFileName: `testChoiceNumber.indexHelper`,
@@ -16,16 +16,16 @@ const config = {
 const testsSelector = new TestsSelector(config);
 const featureEventEmitter = new events.EventEmitter();
 const testsEventEmitter = new events.EventEmitter();
-fs.mkdirSync(`${process.cwd()}/dist/specs/feature1`, {recursive: true});
-fs.mkdirSync(`${process.cwd()}/dist/specs/feature2`, {recursive: true});
-fs.mkdirSync(`${process.cwd()}/dist/specs/feature2/subFeature1`, {recursive: true});
-fs.mkdirSync(`${process.cwd()}/dist/specs/feature2/subFeature2`, {recursive: true});
-fs.writeFileSync(`${process.cwd()}/dist/specs/feature1/test1.spec.ts`, '');
-fs.writeFileSync(`${process.cwd()}/dist/specs/feature1/test2.spec.ts`, '');
-fs.writeFileSync(`${process.cwd()}/dist/specs/feature2/subFeature1/test3.spec.ts`, '');
-fs.writeFileSync(`${process.cwd()}/dist/specs/feature2/subFeature1/test4.spec.ts`, '');
-fs.writeFileSync(`${process.cwd()}/dist/specs/feature2/subFeature1/test5.spec.ts`, '');
-fs.writeFileSync(`${process.cwd()}/dist/specs/feature2/subFeature2/test6.spec.ts`, '');
+fs.mkdirSync(`${process.cwd()}/.testsSelector/specs/feature1`, {recursive: true});
+fs.mkdirSync(`${process.cwd()}/.testsSelector/specs/feature2`, {recursive: true});
+fs.mkdirSync(`${process.cwd()}/.testsSelector/specs/feature2/subFeature1`, {recursive: true});
+fs.mkdirSync(`${process.cwd()}/.testsSelector/specs/feature2/subFeature2`, {recursive: true});
+fs.writeFileSync(`${process.cwd()}/.testsSelector/specs/feature1/test1.spec.ts`, '');
+fs.writeFileSync(`${process.cwd()}/.testsSelector/specs/feature1/test2.spec.ts`, '');
+fs.writeFileSync(`${process.cwd()}/.testsSelector/specs/feature2/subFeature1/test3.spec.ts`, '');
+fs.writeFileSync(`${process.cwd()}/.testsSelector/specs/feature2/subFeature1/test4.spec.ts`, '');
+fs.writeFileSync(`${process.cwd()}/.testsSelector/specs/feature2/subFeature1/test5.spec.ts`, '');
+fs.writeFileSync(`${process.cwd()}/.testsSelector/specs/feature2/subFeature2/test6.spec.ts`, '');
 const specs = {
   feature1: [
     `${process.cwd()}/specs/feature1/test1.spec.ts`,
@@ -90,14 +90,6 @@ describe(`index`, () => {
 
 
 describe(`e2e`, () => {
-  beforeAll(() => {
-    createDir(`${process.cwd()}/dist/specs`);
-    createDir(`${process.cwd()}/dist/specs/feature1`);
-    createDir(`${process.cwd()}/dist/specs/feature2`);
-    createDir(`${process.cwd()}/dist/specs/feature2/subFeature1`);
-    createDir(`${process.cwd()}/dist/specs/feature2/subFeature2`);
-  });
-
   beforeEach(() => {
     jest.restoreAllMocks();
     jest.spyOn(console, 'info').mockImplementation(() => null);

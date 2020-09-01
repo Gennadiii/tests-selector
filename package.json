@@ -1,10 +1,9 @@
 {
   "name": "tests-selector",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "Makes it easy to select tests for local test runs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "prepublish": "tsc",
   "scripts": {
     "build": "tsc",
     "codeCheck": "tsc && tslint -p tsconfig.json",
@@ -22,6 +21,7 @@
     "url": "https://github.com/Gennadiii/tests-selector/issues"
   },
   "homepage": "https://github.com/Gennadiii/tests-selector/blob/master/README.md",
+  "keywords": ["test", "cli", "selector"],
   "files": ["dist/**/*"],
   "dependencies": {
     "multiselect-prompt": "0.3.2",

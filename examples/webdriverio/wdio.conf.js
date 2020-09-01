@@ -2,7 +2,7 @@ const fs = require('fs');
 
 exports.config = {
   runner: 'local',
-  specs: JSON.parse(fs.readFileSync(`${process.cwd()}/.specsSelector/selectedTests.generated`).toString()),
+  specs: JSON.parse(fs.readFileSync(`${process.cwd()}/.testsSelector/selectedTests.generated`).toString()),
   capabilities: [{
     browserName: 'chrome',
     acceptInsecureCerts: true
