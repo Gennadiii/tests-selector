@@ -1,4 +1,3 @@
-// const TestSelector = require('test-selector');
 const SpecsSelector = require('../../dist/index').default;
 
 
