@@ -1,4 +1,4 @@
-const SpecsSelector = require('../../dist/index').default;
+const SpecsSelector = require('tests-selector').default;
 
 
 if (require.main === module) {

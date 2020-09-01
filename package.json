@@ -1,6 +1,6 @@
 {
   "name": "tests-selector",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Makes it easy to select tests for local test runs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,6 +14,15 @@
   },
   "author": "Gennadii Mishchevskii",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gennadiii/tests-selector.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Gennadiii/tests-selector/issues"
+  },
+  "homepage": "https://github.com/Gennadiii/tests-selector/blob/master/README.md",
+  "files": ["dist/**/*"],
   "dependencies": {
     "multiselect-prompt": "0.3.2",
     "select-prompt": "0.3.2"

@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "protractor": "7.0.0"
+    "protractor": "7.0.0",
+    "tests-selector": "^1.0.0"
   }
 }
