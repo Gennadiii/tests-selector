@@ -136,6 +136,11 @@
         "signature": "89bf2b7a601b73ea4311eda9c41f86a58994fec1bee3b87c4a14d68d9adcdcbd",
         "affectsGlobalScope": true
       },
+      "./index.d.ts": {
+        "version": "ccad18490809458ba6b4bc7babc94f03c7511837e3d8420f349a1d4881f4b36b",
+        "signature": "ccad18490809458ba6b4bc7babc94f03c7511837e3d8420f349a1d4881f4b36b",
+        "affectsGlobalScope": false
+      },
       "../src/helpers/prompt.helper.ts": {
         "version": "5990c8f12d0dd9a742b7e8f46390cc9ecc88d970dce40624f12cf7d8a88ac8e0",
         "signature": "54b420cb52a6590c4ab448d7222c94a9712d9faec50a8c4b91d254b464182098",
@@ -152,8 +157,8 @@
         "affectsGlobalScope": false
       },
       "../index.ts": {
-        "version": "2509a229bd267cf8d0865dd4c493f5e275a795425a3bc730890ecc93857399e9",
-        "signature": "27c686ee4d675e2a8ecca847b0eefe071e812bc65c96eb016b87e35641e975d3",
+        "version": "aa2f8fc6312f32eee45b80592b5703c06dca53041d9642ad1d3a6b72007176d0",
+        "signature": "9f17e8803c676e2d078d4187e4d7893e489f36d0e2044b26c0c983badbfab40a",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/node/globals.d.ts": {
@@ -720,6 +725,15 @@
         "../src/helpers/prompt.helper.ts",
         "../src/helpers/selecttests.helper.ts"
       ],
+      "./index.d.ts": [
+        "../node_modules/@types/graceful-fs/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/process.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/process.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
       "../index.ts": [
         "../node_modules/@types/graceful-fs/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
@@ -728,7 +742,8 @@
         "../node_modules/@types/node/ts3.2/process.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts",
-        "../src/helpers/selecttests.helper.ts"
+        "../src/helpers/selecttests.helper.ts",
+        "./index.d.ts"
       ],
       "../node_modules/@babel/parser/typings/babel-parser.d.ts": [
         "../node_modules/@babel/types/lib/index.d.ts",
@@ -2130,6 +2145,18 @@
       ]
     },
     "exportedModulesMap": {
+      "./index.d.ts": [
+        "../node_modules/@types/graceful-fs/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/process.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/process.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../index.ts": [
+        "./index.d.ts"
+      ],
       "../node_modules/@babel/parser/typings/babel-parser.d.ts": [
         "../node_modules/@babel/types/lib/index.d.ts",
         "../node_modules/@types/graceful-fs/index.d.ts",
@@ -3466,6 +3493,7 @@
     },
     "semanticDiagnosticsPerFile": [
       "../__tests__/index.test.ts",
+      "./index.d.ts",
       "../index.ts",
       "../node_modules/@babel/parser/typings/babel-parser.d.ts",
       "../node_modules/@babel/types/lib/index.d.ts",

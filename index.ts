@@ -1,4 +1,5 @@
 import fs from "fs";
+import {configInterface, testsSelectorConstructorInterface} from "./dist";
 import {selectTestsHelper} from "./src/helpers/selectTests.helper";
 
 
@@ -40,26 +41,4 @@ export default class TestsSelector {
     return tests;
   }
 
-}
-
-
-interface testsSelectorConstructorInterface {
-  tempDataPath?: string;
-  selectedTestsFileName?: string;
-  specsPath?: string;
-  specIdentifiers?: string[];
-  maxFilesInDir?: number;
-  testChoiceNumberFileName?: string;
-  featureChoiceNumberFileName?: string;
-}
-
-
-interface configInterface {
-  tempDataPath: string;
-  testChoiceNumberPath: string;
-  featureChoiceNumberPath: string;
-  specsPath: string;
-  specIdentifiers: string[];
-  selectedTestsFilePath: string;
-  maxFilesInDir: number;
 }
