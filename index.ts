@@ -41,4 +41,7 @@ export default class TestsSelector {
     return tests;
   }
 
+  getTestsFromFile() {
+    return JSON.parse(fs.readFileSync(this.config.selectedTestsFilePath).toString());
+  }
 }

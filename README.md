@@ -12,7 +12,7 @@ $ npm install tests-selector --save-dev
 
 ### Basic usage
 
-Tests selector returns an array of selected tests paths. If you use framework like wdio or protractor that might not work for you. Tests selector also writes a file with the same array of selected tests, so you may read this file in your framework's config. Just run tests selector first. You may find examples in the repo.
+Tests selector returns an array of selected tests paths. If you use framework like wdio or protractor that might not work for you. Tests selector also writes a file with the same array of selected tests, so you may read this file in your framework's config using getTestsFromFile method. Just run tests selector first. You may find examples in the repo.
 
 ```specsSelector.js```
 ```
@@ -66,3 +66,6 @@ Feel free to open up issue or submit a PR. Thanks!
 ## Changelog
 
 - 1.0.0 - Initial release
+- 1.0.4 - Fix for absent dist
+- 1.0.9 - Added typings
+- 1.1.0 - Added getting selected tests from file method

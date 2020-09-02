@@ -4,6 +4,7 @@ declare class TestsSelector {
   config: configInterface;
 
   selectTests: () => Promise<string>;
+  getTestsFromFile: () => string;
 }
 export default TestsSelector;
 

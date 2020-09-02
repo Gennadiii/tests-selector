@@ -41,5 +41,8 @@ class TestsSelector {
             return tests;
         });
     }
+    getTestsFromFile() {
+        return JSON.parse(fs_1.default.readFileSync(this.config.selectedTestsFilePath).toString());
+    }
 }
 exports.default = TestsSelector;

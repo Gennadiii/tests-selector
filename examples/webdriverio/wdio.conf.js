@@ -1,8 +1,8 @@
-const fs = require('fs');
+const specsSelector = require("./specsSelector").specsSelector;
 
 exports.config = {
   runner: 'local',
-  specs: JSON.parse(fs.readFileSync(`${process.cwd()}/.testsSelector/selectedTests.generated`).toString()),
+  specs: specsSelector.getTestsFromFile(),
   capabilities: [{
     browserName: 'chrome',
     acceptInsecureCerts: true

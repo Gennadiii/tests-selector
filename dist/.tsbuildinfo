@@ -137,8 +137,8 @@
         "affectsGlobalScope": true
       },
       "./index.d.ts": {
-        "version": "ccad18490809458ba6b4bc7babc94f03c7511837e3d8420f349a1d4881f4b36b",
-        "signature": "ccad18490809458ba6b4bc7babc94f03c7511837e3d8420f349a1d4881f4b36b",
+        "version": "80c8bb67bb80eb052266ec84b0d88378b38485bd142cc55138c20685a5f1828b",
+        "signature": "80c8bb67bb80eb052266ec84b0d88378b38485bd142cc55138c20685a5f1828b",
         "affectsGlobalScope": false
       },
       "../src/helpers/prompt.helper.ts": {
@@ -157,8 +157,8 @@
         "affectsGlobalScope": false
       },
       "../index.ts": {
-        "version": "aa2f8fc6312f32eee45b80592b5703c06dca53041d9642ad1d3a6b72007176d0",
-        "signature": "9f17e8803c676e2d078d4187e4d7893e489f36d0e2044b26c0c983badbfab40a",
+        "version": "a659e133dcd2436e6a298692bf0165a0f444501434e84a3821254923b84505b6",
+        "signature": "ee53f411779d8ee5ab371981489932b2108b2f3d21763cef6ad6e4ddacf82dbe",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/node/globals.d.ts": {
@@ -577,7 +577,7 @@
         "affectsGlobalScope": false
       },
       "../__tests__/index.test.ts": {
-        "version": "d5fdcd5860cba2ae69d78986e4da6b8a6eda8ccaaf3a2026d0cedee9c6601718",
+        "version": "34c382d98e89d130c1387f80bfbf2496bc5f96c66e46fb57f1db980b0e2be93c",
         "signature": "f761c91419d0a89422a0004ef1a92929dd4d2d5e5c16758654d8b0467d1998c6",
         "affectsGlobalScope": false
       },

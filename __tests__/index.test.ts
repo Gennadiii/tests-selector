@@ -1,4 +1,4 @@
-import {beforeAll, beforeEach, describe, expect, it, jest} from "@jest/globals";
+import {beforeEach, describe, expect, it, jest} from "@jest/globals";
 import events from "events";
 import fs from "fs";
 import TestsSelector from "../index";
@@ -86,6 +86,19 @@ describe(`index`, () => {
       expect(writeFileSyncMock).not.toBeCalled();
     });
   });
+
+  describe(`getTestsFromFile`, () => {
+    it(`returns selected tests array from file`, () => {
+      const readFileMock = jest.spyOn(fs, 'readFileSync')
+        .mockImplementation(() => new Buffer("[\"path/someTest.spec.js\"]"));
+      const stringifyMock = jest.spyOn(JSON, 'parse')
+        .mockImplementation(() => "[\"path/someTest.spec.js\"]");
+      const result = testsSelector.getTestsFromFile();
+      expect(readFileMock).toBeCalledWith(`${config.tempDataPath}/${config.selectedTestsFileName}`);
+      expect(stringifyMock).toBeCalledWith("[\"path/someTest.spec.js\"]");
+      expect(result).toEqual("[\"path/someTest.spec.js\"]");
+    });
+  });
 });
 
 
@@ -147,10 +160,6 @@ function sleep(timeout) {
 
 function removeSlashes(str: string): string {
   return str.replace(/\\|\//g, '');
-}
-
-function createDir(path) {
-  fs.existsSync(path) || fs.mkdirSync(path, {recursive: true});
 }
 
 

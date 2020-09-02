@@ -92,6 +92,18 @@ globals_1.describe(`index`, () => {
             globals_1.expect(writeFileSyncMock).not.toBeCalled();
         });
     });
+    globals_1.describe(`getTestsFromFile`, () => {
+        globals_1.it(`returns selected tests array from file`, () => {
+            const readFileMock = globals_1.jest.spyOn(fs_1.default, 'readFileSync')
+                .mockImplementation(() => new Buffer("[\"path/someTest.spec.js\"]"));
+            const stringifyMock = globals_1.jest.spyOn(JSON, 'parse')
+                .mockImplementation(() => "[\"path/someTest.spec.js\"]");
+            const result = testsSelector.getTestsFromFile();
+            globals_1.expect(readFileMock).toBeCalledWith(`${config.tempDataPath}/${config.selectedTestsFileName}`);
+            globals_1.expect(stringifyMock).toBeCalledWith("[\"path/someTest.spec.js\"]");
+            globals_1.expect(result).toEqual("[\"path/someTest.spec.js\"]");
+        });
+    });
 });
 globals_1.describe(`e2e`, () => {
     globals_1.beforeEach(() => {
@@ -147,7 +159,4 @@ function sleep(timeout) {
 }
 function removeSlashes(str) {
     return str.replace(/\\|\//g, '');
-}
-function createDir(path) {
-    fs_1.default.existsSync(path) || fs_1.default.mkdirSync(path, { recursive: true });
 }
