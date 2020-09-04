@@ -1,4 +1,4 @@
-# Test Selector &middot;
+# Tests Selector &middot;
 
 CLI tool to select UI tests for execution.
 
@@ -35,6 +35,9 @@ if (require.main === module) {
     "test": "node specsSelector.js && wdio run wdio.conf.js"
   },
 ```
+```wdio.conf```
+
+```specs: specsSelector.getTestsFromFile(),```
 
 ![](examples/demo.gif)
 
