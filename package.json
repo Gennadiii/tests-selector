@@ -21,14 +21,20 @@
     "url": "https://github.com/Gennadiii/tests-selector/issues"
   },
   "homepage": "https://github.com/Gennadiii/tests-selector/blob/master/README.md",
-  "keywords": ["test", "cli", "selector"],
-  "files": ["dist/**/*"],
+  "keywords": [
+    "test",
+    "cli",
+    "selector"
+  ],
+  "files": [
+    "dist/**/*"
+  ],
   "dependencies": {
     "multiselect-prompt": "0.3.2",
     "select-prompt": "0.3.2"
   },
   "devDependencies": {
-    "@types/node": "14.6.0",
+    "@types/node": "^14.6.0",
     "jest": "26.4.0",
     "ts-jest": "26.3.0",
     "ts-node": "9.0.0",

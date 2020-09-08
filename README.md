@@ -4,10 +4,12 @@ CLI tool to select UI tests for execution.
 
 `tests-selector` will parse your tests folder and provide a lost of features with tests inside. You can select any number of tests inside a feature.
 
+![npm downloads](https://img.shields.io/npm/dm/tests-selector.svg?style=flat-square)
+
 ## Installation
 
 ```bash
-$ npm install tests-selector --save-dev 
+$ npm install tests-selector --save-dev
 ```
 
 ### Basic usage

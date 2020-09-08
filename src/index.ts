@@ -1,6 +1,27 @@
-import fs from "fs";
-import {configInterface, testsSelectorConstructorInterface} from "./dist";
-import {selectTestsHelper} from "./src/helpers/selectTests.helper";
+import * as fs from "fs";
+import {selectTestsHelper} from "./helpers/selectTests.helper";
+
+
+export interface testsSelectorConstructorInterface {
+  tempDataPath?: string;
+  selectedTestsFileName?: string;
+  specsPath?: string;
+  specIdentifiers?: string[];
+  maxFilesInDir?: number;
+  testChoiceNumberFileName?: string;
+  featureChoiceNumberFileName?: string;
+}
+
+
+export interface configInterface {
+  tempDataPath: string;
+  testChoiceNumberPath: string;
+  featureChoiceNumberPath: string;
+  specsPath: string;
+  specIdentifiers: string[];
+  selectedTestsFilePath: string;
+  maxFilesInDir: number;
+}
 
 
 export default class TestsSelector {
@@ -28,7 +49,7 @@ export default class TestsSelector {
   }
 
 
-  async selectTests() {
+  async selectTests(): Promise<string[]> {
     fs.existsSync(this.config.tempDataPath) || fs.mkdirSync(this.config.tempDataPath, {recursive: true});
     const tests = await selectTestsHelper.selectTests({
       testChoiceNumberPath: this.config.testChoiceNumberPath,
@@ -41,7 +62,7 @@ export default class TestsSelector {
     return tests;
   }
 
-  getTestsFromFile() {
+  getTestsFromFile(): string {
     return JSON.parse(fs.readFileSync(this.config.selectedTestsFilePath).toString());
   }
 }
