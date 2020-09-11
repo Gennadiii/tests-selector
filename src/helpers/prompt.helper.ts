@@ -1,6 +1,6 @@
 import {fsHelper} from "./fs.helper";
-import * as multiPrompt from "multiselect-prompt";
-import * as prompt from "select-prompt";
+import multiPrompt from "multiselect-prompt";
+import prompt from "select-prompt";
 import {selectTestsHelper} from "./selectTests.helper";
 
 

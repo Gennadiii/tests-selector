@@ -74,3 +74,4 @@ Feel free to open up issue or submit a PR. Thanks!
 - 1.0.4 - Fix for absent dist
 - 1.0.9 - Added typings
 - 1.1.0 - Added getting selected tests from file method
+- 1.1.4 - optimized build

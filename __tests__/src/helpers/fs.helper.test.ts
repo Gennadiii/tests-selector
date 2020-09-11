@@ -1,5 +1,5 @@
 import {beforeEach, describe, expect, it, jest} from "@jest/globals";
-import * as fs from "fs";
+import fs from "fs";
 import {fsHelper} from "../../../src/helpers/fs.helper";
 import {promptObjectInterface} from "../../../src/helpers/prompt.helper";
 

@@ -1,4 +1,4 @@
-import * as fs from "fs";
+import fs from "fs";
 import {selectTestsHelper} from "./helpers/selectTests.helper";
 
 

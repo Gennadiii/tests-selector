@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "incremental": true,
     "module": "commonjs",
-    "target": "es2018",
+    "target": "es2015",
     "outDir": "dist",
     "skipLibCheck": true,
     "declaration": true,
-    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+    "esModuleInterop": true
   },
   "include": [
     "src"
