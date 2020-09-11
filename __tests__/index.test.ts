@@ -1,7 +1,7 @@
 import {beforeEach, describe, expect, it, jest} from "@jest/globals";
-import events from "events";
-import fs from "fs";
-import TestsSelector from "../index";
+import * as events from "events";
+import * as fs from "fs";
+import TestsSelector from "../src/index";
 import {promptHelper, promptObjectInterface} from "../src/helpers/prompt.helper";
 import {selectTestsHelper} from "../src/helpers/selectTests.helper";
 

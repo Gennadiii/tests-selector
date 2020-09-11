@@ -1,30 +1,20 @@
 {
-  "compileOnSave": true,
-  "declaration": true,
-  "types": "index.d.ts",
   "compilerOptions": {
     "incremental": true,
-    "tsBuildInfoFile": "./dist/.tsbuildinfo",
-    "lib": [
-      "es2015",
-      "es2017"
-    ],
     "module": "commonjs",
-    "target": "es2015",
-    "outDir": "./dist",
-    "sourceMap": false,
+    "target": "es2018",
+    "outDir": "dist",
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "typeRoots": [
-      "./node_modules/@types"
-    ]
+    "declaration": true,
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
   },
   "include": [
-    "**/*.ts"
+    "src"
   ],
   "exclude": [
     "node_modules",
-    "typings",
-    "dist"
+    "dist",
+    "__tests__",
+    "examples"
   ]
 }

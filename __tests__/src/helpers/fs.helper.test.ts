@@ -1,7 +1,7 @@
 import {beforeEach, describe, expect, it, jest} from "@jest/globals";
-import fs from "fs";
-import {fsHelper} from "../fs.helper";
-import {promptObjectInterface} from "../prompt.helper";
+import * as fs from "fs";
+import {fsHelper} from "../../../src/helpers/fs.helper";
+import {promptObjectInterface} from "../../../src/helpers/prompt.helper";
 
 
 const generatedPath = `${process.cwd()}/.testsSelector/generated${Date.now()}`;

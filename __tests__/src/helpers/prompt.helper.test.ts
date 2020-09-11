@@ -1,8 +1,8 @@
 import {beforeEach, describe, expect, it, jest} from "@jest/globals";
-import events from "events";
-import {fsHelper} from "../fs.helper";
-import {promptHelper, promptObjectInterface} from "../prompt.helper";
-import {selectTestsHelper} from "../selectTests.helper";
+import * as events from "events";
+import {fsHelper} from "../../../src/helpers/fs.helper";
+import {promptHelper, promptObjectInterface} from "../../../src/helpers/prompt.helper";
+import {selectTestsHelper} from "../../../src/helpers/selectTests.helper";
 
 
 describe(`prompt helper`, () => {

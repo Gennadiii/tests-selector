@@ -1,7 +1,7 @@
 import {beforeEach, describe, expect, it, jest} from "@jest/globals";
-import {fsHelper} from "../fs.helper";
-import {promptHelper} from "../prompt.helper";
-import {selectTestsHelper} from "../selectTests.helper";
+import {fsHelper} from "../../../src/helpers/fs.helper";
+import {promptHelper} from "../../../src/helpers/prompt.helper";
+import {selectTestsHelper} from "../../../src/helpers/selectTests.helper";
 
 
 describe(`select tests helper`, () => {
