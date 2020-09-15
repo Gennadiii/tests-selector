@@ -64,10 +64,6 @@ if (require.main === module) {
 
 TestsSelector instance also provide
 
-## Contributing
-
-Feel free to open up issue or submit a PR. Thanks!
-
 ## Changelog
 
 - 1.0.0 - Initial release
@@ -77,3 +73,29 @@ Feel free to open up issue or submit a PR. Thanks!
 - 1.1.4 - optimized build
 - 1.1.5 - got rid of "default" when importing with JS
 - 1.1.6 - support for 0 nesting level tests
+- 1.1.7 - contributing guide
+
+##Contributing
+  
+  - Create a personal fork of the project on Github.
+  - Clone the fork on your local machine. Your remote repo on Github is called `origin`.
+  - Add the original repository as a remote called `upstream`.
+  ```
+  git remote add upstream https://github.com/Gennadiii/tests-selector
+  git remote -v
+  origin  https://github.com/username/tests-selector.git (fetch)
+  origin  https://github.com/username/tests-selector.git (push)
+  upstream        https://github.com/Gennadiii/tests-selector (fetch)
+  upstream        https://github.com/Gennadiii/tests-selector (push)
+  ```
+  - If you created your fork a while ago be sure to pull upstream changes into your local repository.
+  ```git merge upstream/develop```
+  - Implement fix or feature.
+  - Follow the code style of the project, including indentation.
+  - Run tests from `__spec__` folder (```npm test```).
+  - Write or adopt tests as needed.
+  - Make sure you didn't miss any tests (```npm run test-coverage```).
+  - Add or change the documentation as needed.
+  - Squash your commits.
+  - Push your branch to your fork on Github, the remote `origin`.
+  - From your fork open a pull request. Target the project's `master`.
