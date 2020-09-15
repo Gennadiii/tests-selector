@@ -54,7 +54,7 @@ export const fsHelper = {
   },
 
   removeFirstDirFromPath(path: string): string {
-    return path.replace(/^\/?[^\/]*./, '');
+    return path.replace(/^\/?[^/]*./, '');
   },
 
 };

@@ -5,11 +5,11 @@ import {selectTestsHelper} from "../../../src/helpers/selectTests.helper";
 
 
 describe(`select tests helper`, () => {
-  beforeEach(() => jest.restoreAllMocks());
+  void beforeEach(() => jest.restoreAllMocks());
 
 
   describe(`selectTests`, () => {
-    beforeEach(() => {
+    void beforeEach(() => {
       jest.spyOn(console, 'info').mockImplementation(() => null);
       jest.spyOn(selectTestsHelper, 'getTestsDirPath')
         .mockImplementation(async () => ({testsDirPath: 'testDir', nestingLevel: 42}));
@@ -103,7 +103,7 @@ describe(`select tests helper`, () => {
 
 
   describe(`getTestsDirPath`, () => {
-    beforeEach(() => {
+    void beforeEach(() => {
       jest.spyOn(fsHelper, 'getFeatures').mockImplementation(() => ['feature1', 'feature2']);
       jest.spyOn(promptHelper, 'getPromptObjects').mockImplementation(() => [{
         selected: false,

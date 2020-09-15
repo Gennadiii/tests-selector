@@ -8,7 +8,7 @@ const generatedPath = `${process.cwd()}/.testsSelector/generated${Date.now()}`;
 fs.mkdirSync(generatedPath, {recursive: true});
 
 describe(`fs helper`, () => {
-  beforeEach(() => jest.restoreAllMocks());
+  void beforeEach(() => jest.restoreAllMocks());
 
   describe(`getFilesRecursively`, () => {
     it(`gets all files from nested directories`, () => {
