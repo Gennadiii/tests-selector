@@ -159,11 +159,21 @@ describe(`fs helper`, () => {
   describe(`getFeatures`, () => {
     it(`returns only features`, () => {
       // @ts-ignore
-      jest.spyOn(fs, 'readdirSync').mockImplementation(path => [
-        `${path}/folder1`,
-        `${path}/file.spec.ts`,
+      jest.spyOn(fs, 'readdirSync').mockImplementation(() => [
+        `folder1`,
+        `file.spec.ts`,
       ]);
-      expect(fsHelper.getFeatures('somePath')).toEqual([`somePath/folder1`]);
+      const statSyncMock = jest.spyOn(fs, 'statSync')
+        // @ts-ignore
+        .mockImplementationOnce(() => ({
+          isDirectory: () => true,
+        }))
+        // @ts-ignore
+        .mockImplementationOnce(() => ({
+          isDirectory: () => false,
+        }));
+      expect(fsHelper.getFeatures('somePath')).toEqual([`folder1`]);
+      expect(statSyncMock).toHaveBeenNthCalledWith(1, `somePath/folder1`);
     });
   });
 

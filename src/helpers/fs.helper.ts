@@ -50,7 +50,7 @@ export const fsHelper = {
 
   getFeatures(path: string): string[] {
     return fs.readdirSync(path)
-      .filter(str => !str.includes('.'));
+      .filter(str => fs.statSync(`${path}/${str}`).isDirectory());
   },
 
   removeFirstDirFromPath(path: string): string {

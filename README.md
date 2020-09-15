@@ -75,3 +75,5 @@ Feel free to open up issue or submit a PR. Thanks!
 - 1.0.9 - Added typings
 - 1.1.0 - Added getting selected tests from file method
 - 1.1.4 - optimized build
+- 1.1.5 - got rid of "default" when importing with JS
+- 1.1.6 - support for 0 nesting level tests

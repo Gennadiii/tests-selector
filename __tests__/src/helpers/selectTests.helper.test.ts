@@ -112,15 +112,17 @@ describe(`select tests helper`, () => {
       }]);
       jest.spyOn(promptHelper, 'promptFeature').mockImplementation(async () => 'feature2');
       jest.spyOn(selectTestsHelper, 'hasSelectedFeatureChangedFromLastInput').mockImplementation(() => true);
-      jest.spyOn(fsHelper, 'getFilesRecursively').mockImplementation(() => ['1']);
-      jest.spyOn(fsHelper, 'isAllContentDirectories').mockImplementation(() => true);
       jest.spyOn(fsHelper, 'writeSelectedFeature').mockImplementation(() => null);
     });
 
-    it(`writes selected feature`, async done => {
+    it(`writes selected feature if it changed from last time`, async done => {
       jest.spyOn(fsHelper, 'getFeatures').mockImplementation(() => ['feature1', 'feature2']);
       jest.spyOn(promptHelper, 'promptFeature').mockImplementation(async () => 'feature2');
+      jest.spyOn(selectTestsHelper, 'hasSelectedFeatureChangedFromLastInput').mockImplementation(() => true);
       const writeSelectedFeatureMock = jest.spyOn(fsHelper, 'writeSelectedFeature').mockImplementation(() => null);
+      jest.spyOn(selectTestsHelper, 'shouldPromptFeature')
+        .mockImplementationOnce(() => true)
+        .mockImplementationOnce(() => false);
       await selectTestsHelper.getTestsDirPath({
         specsPath: 'specsPath',
         index: 42,
@@ -137,42 +139,55 @@ describe(`select tests helper`, () => {
       done();
     });
 
-    it("returns tesDirPath and nesting level if files number is less than maxFilesInDir", async done => {
-      jest.spyOn(fsHelper, 'getFilesRecursively').mockImplementation(() => ['1', '2']);
-      jest.spyOn(fsHelper, 'isAllContentDirectories').mockImplementation(() => true);
+    it(`doesn't write selected feature if it didn't change from last time`, async done => {
+      jest.spyOn(fsHelper, 'getFeatures').mockImplementation(() => ['feature1', 'feature2']);
+      jest.spyOn(promptHelper, 'promptFeature').mockImplementation(async () => 'feature2');
+      jest.spyOn(selectTestsHelper, 'hasSelectedFeatureChangedFromLastInput').mockImplementation(() => false);
+      const writeSelectedFeatureMock = jest.spyOn(fsHelper, 'writeSelectedFeature').mockImplementation(() => null);
+      jest.spyOn(selectTestsHelper, 'shouldPromptFeature')
+        .mockImplementationOnce(() => true)
+        .mockImplementationOnce(() => false);
+      await selectTestsHelper.getTestsDirPath({
+        specsPath: 'specsPath',
+        index: 42,
+        maxFilesInDir: 1,
+        featureChoiceNumberPath: 'featureChoiceNumberPath',
+      });
+      expect(writeSelectedFeatureMock).not.toBeCalled();
+      done();
+    });
+
+    it(`returns specsPath and nesting level if shouldn't prompt feature`, async done => {
+      jest.spyOn(selectTestsHelper, 'shouldPromptFeature').mockImplementation(() => false);
+      const result = await selectTestsHelper.getTestsDirPath({
+        specsPath: 'specsPath',
+        index: 42,
+        maxFilesInDir: 2,
+        featureChoiceNumberPath: 'featureChoiceNumberPath',
+      });
+      expect(result).toEqual({nestingLevel: 43, testsDirPath: 'specsPath/'});
+      done();
+    });
+
+    it("returns tesDirPath and nesting level if should prompt feature once", async done => {
+      jest.spyOn(selectTestsHelper, 'shouldPromptFeature')
+        .mockImplementationOnce(() => true)
+        .mockImplementationOnce(() => false);
       jest.spyOn(promptHelper, 'promptFeature').mockImplementation(async () => 'feature');
       const result = await selectTestsHelper.getTestsDirPath({
         specsPath: 'specsPath',
         index: 42,
         maxFilesInDir: 2,
         featureChoiceNumberPath: 'featureChoiceNumberPath',
-        pathToSelectedFeature: 'pathToSelectedFeature',
       });
-      expect(result).toEqual({nestingLevel: 43, testsDirPath: 'pathToSelectedFeature/feature'});
+      expect(result).toEqual({nestingLevel: 43, testsDirPath: 'specsPath/feature'});
       done();
     });
 
-    it("returns tesDirPath and nesting level if all content are not directories", async done => {
-      jest.spyOn(fsHelper, 'getFilesRecursively').mockImplementation(() => ['1', '2']);
-      jest.spyOn(fsHelper, 'isAllContentDirectories').mockImplementation(() => true);
-      jest.spyOn(promptHelper, 'promptFeature').mockImplementation(async () => 'feature');
-      const result = await selectTestsHelper.getTestsDirPath({
-        specsPath: 'specsPath',
-        index: 42,
-        maxFilesInDir: 2,
-        featureChoiceNumberPath: 'featureChoiceNumberPath',
-        pathToSelectedFeature: 'pathToSelectedFeature',
-      });
-      expect(result).toEqual({nestingLevel: 43, testsDirPath: 'pathToSelectedFeature/feature'});
-      done();
-    });
-
-    it("returns nested tesDirPath and nesting level " +
-      "if files number is more than maxFilesInDir and all content are directories", async done => {
-      jest.spyOn(fsHelper, 'getFilesRecursively')
-        .mockImplementationOnce(() => ['1', '2'])
-        .mockImplementationOnce(() => ['3']);
-      jest.spyOn(fsHelper, 'isAllContentDirectories')
+    it("returns nested tesDirPath and nesting level should prompt feature twice", async done => {
+      jest.spyOn(selectTestsHelper, 'shouldPromptFeature')
+        .mockImplementationOnce(() => true)
+        .mockImplementationOnce(() => true)
         .mockImplementationOnce(() => true)
         .mockImplementationOnce(() => false);
       jest.spyOn(promptHelper, 'promptFeature')
@@ -185,17 +200,22 @@ describe(`select tests helper`, () => {
         index: 42,
         maxFilesInDir: 1,
         featureChoiceNumberPath: 'featureChoiceNumberPath',
-        pathToSelectedFeature: 'pathToSelectedFeature',
+      });
+      expect(getTestsDirPathSpy).toHaveBeenNthCalledWith(1, {
+        specsPath: 'specsPath',
+        index: 42,
+        maxFilesInDir: 1,
+        featureChoiceNumberPath: 'featureChoiceNumberPath',
       });
       expect(getTestsDirPathSpy).toHaveBeenNthCalledWith(2, {
         specsPath: 'specsPath',
         index: 43,
         maxFilesInDir: 1,
         featureChoiceNumberPath: 'featureChoiceNumberPath',
-        pathToSelectedFeature: 'pathToSelectedFeature/feature',
+        pathToSelectedFeature: 'specsPath/feature',
         selectedFeatureChangedFromLastRun: false,
       });
-      expect(result).toEqual({nestingLevel: 44, testsDirPath: 'pathToSelectedFeature/feature/nestedFeature'});
+      expect(result).toEqual({nestingLevel: 44, testsDirPath: 'specsPath/feature/nestedFeature'});
       done();
     });
   });
@@ -265,6 +285,27 @@ describe(`select tests helper`, () => {
 
     it(`gets middle of odd array`, () => {
       expect(selectTestsHelper.getMiddle(['1', '2', '3'])).toEqual(1);
+    });
+  });
+
+
+  describe(`shouldPromptFeature`, () => {
+    it(`returns false if files number is less or equal to maxFilesInDir`, () => {
+      jest.spyOn(fsHelper, 'getFilesRecursively').mockImplementation(() => ['1', '2']);
+      jest.spyOn(fsHelper, 'isAllContentDirectories').mockImplementation(() => true);
+      expect(selectTestsHelper.shouldPromptFeature('path', 2)).toBeFalsy();
+    });
+
+    it(`returns false if files number is all content are not directories`, () => {
+      jest.spyOn(fsHelper, 'getFilesRecursively').mockImplementation(() => ['1', '2']);
+      jest.spyOn(fsHelper, 'isAllContentDirectories').mockImplementation(() => false);
+      expect(selectTestsHelper.shouldPromptFeature('path', 2)).toBeFalsy();
+    });
+
+    it(`returns true if files number is more than maxFilesInDir and all content are directories`, () => {
+      jest.spyOn(fsHelper, 'getFilesRecursively').mockImplementation(() => ['1', '2']);
+      jest.spyOn(fsHelper, 'isAllContentDirectories').mockImplementation(() => true);
+      expect(selectTestsHelper.shouldPromptFeature('path', 1)).toBeTruthy();
     });
   });
 
