@@ -1,4 +1,4 @@
-const SpecsSelector = require('tests-selector').default;
+const SpecsSelector = require('tests-selector');
 
 
 const specsSelector = new SpecsSelector({
