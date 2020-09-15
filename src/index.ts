@@ -1,30 +1,9 @@
 import fs from "fs";
 import {selectTestsHelper} from "./helpers/selectTests.helper";
+import {configInterface, testsSelectorConstructorInterface} from "./index.interface";
 
 
-export interface testsSelectorConstructorInterface {
-  tempDataPath?: string;
-  selectedTestsFileName?: string;
-  specsPath?: string;
-  specIdentifiers?: string[];
-  maxFilesInDir?: number;
-  testChoiceNumberFileName?: string;
-  featureChoiceNumberFileName?: string;
-}
-
-
-export interface configInterface {
-  tempDataPath: string;
-  testChoiceNumberPath: string;
-  featureChoiceNumberPath: string;
-  specsPath: string;
-  specIdentifiers: string[];
-  selectedTestsFilePath: string;
-  maxFilesInDir: number;
-}
-
-
-export default class TestsSelector {
+export = class TestsSelector {
 
   // @ts-ignore
   config: configInterface = {};
@@ -65,4 +44,4 @@ export default class TestsSelector {
   getTestsFromFile(): string {
     return JSON.parse(fs.readFileSync(this.config.selectedTestsFilePath).toString());
   }
-}
+};
