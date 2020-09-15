@@ -62,7 +62,7 @@ describe(`index`, () => {
   });
 
   describe(`selectTests`, () => {
-    beforeEach(() => {
+    void beforeEach(() => {
       jest.restoreAllMocks();
       jest.spyOn(selectTestsHelper, 'selectTests').mockImplementation(async () => []);
       jest.spyOn(fs, 'writeFileSync').mockImplementation(() => null);
@@ -71,8 +71,7 @@ describe(`index`, () => {
     it(`creates temp dir`, () => {
       const existsSyncMock = jest.spyOn(fs, 'existsSync').mockImplementation(() => false);
       const writeFileSyncMock = jest.spyOn(fs, 'mkdirSync').mockImplementation(() => null);
-      // tslint:disable-next-line
-      testsSelector.selectTests();
+      void testsSelector.selectTests();
       expect(existsSyncMock).toBeCalledWith(config.tempDataPath);
       expect(writeFileSyncMock).toBeCalledWith(config.tempDataPath, {recursive: true});
     });
@@ -80,8 +79,7 @@ describe(`index`, () => {
     it(`doesn't create temp dir if it already exists`, () => {
       const existsSyncMock = jest.spyOn(fs, 'existsSync').mockImplementation(() => true);
       const writeFileSyncMock = jest.spyOn(fs, 'mkdirSync').mockImplementation(() => null);
-      // tslint:disable-next-line
-      testsSelector.selectTests();
+      void testsSelector.selectTests();
       expect(existsSyncMock).toBeCalledWith(config.tempDataPath);
       expect(writeFileSyncMock).not.toBeCalled();
     });
@@ -103,7 +101,7 @@ describe(`index`, () => {
 
 
 describe(`e2e`, () => {
-  beforeEach(() => {
+  void beforeEach(() => {
     jest.restoreAllMocks();
     jest.spyOn(console, 'info').mockImplementation(() => null);
     jest.spyOn(promptHelper, 'prompt').mockImplementation(() => featureEventEmitter);

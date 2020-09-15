@@ -6,7 +6,7 @@ import {selectTestsHelper} from "../../../src/helpers/selectTests.helper";
 
 
 describe(`prompt helper`, () => {
-  beforeEach(() => jest.restoreAllMocks());
+  void beforeEach(() => jest.restoreAllMocks());
 
   describe(`getPromptObjects`, () => {
     it(`cuts path depending on nesting level`, () => {
@@ -54,7 +54,7 @@ describe(`prompt helper`, () => {
     let consoleInfoMock = null;
     let promptMock = null;
     const featureEventEmitter = new events.EventEmitter();
-    beforeEach(() => {
+    void beforeEach(() => {
       consoleInfoMock = jest.spyOn(console, 'info').mockImplementation(() => null);
       promptMock = jest.spyOn(promptHelper, 'prompt').mockImplementation(() => featureEventEmitter);
     });
@@ -121,8 +121,7 @@ describe(`prompt helper`, () => {
       jest.spyOn(fsHelper, 'readRememberedInput').mockImplementation(() => ['1']);
       jest.spyOn(selectTestsHelper, 'getMiddle').mockImplementation(() => 42);
       const processMock = jest.spyOn(process, 'exit').mockImplementation(() => null);
-      // tslint:disable-next-line
-      promptHelper.promptFeature({
+      void promptHelper.promptFeature({
         options: [],
         index: 0,
         featureChoiceNumberPath: '',
@@ -151,7 +150,7 @@ describe(`prompt helper`, () => {
     ];
     let consoleInfoMock = null;
     let promptMock = null;
-    beforeEach(() => {
+    void beforeEach(() => {
       consoleInfoMock = jest.spyOn(console, 'info').mockImplementation(() => null);
       promptMock = jest.spyOn(promptHelper, 'multiPrompt').mockImplementation(() => testsEventEmitter);
       jest.spyOn(fsHelper, 'readRememberedInput').mockImplementation(() => []);
@@ -163,8 +162,7 @@ describe(`prompt helper`, () => {
     });
 
     it(`logs help info`, () => {
-      // tslint:disable-next-line
-      promptHelper.promptTests({
+      void promptHelper.promptTests({
         promptObjects,
         testChoiceNumberPath: '',
         selectedFeatureChangedFromLastRun: false,
@@ -175,8 +173,7 @@ describe(`prompt helper`, () => {
     it(`sets cursor to middle option if no remembered input`, () => {
       jest.spyOn(fsHelper, 'readRememberedInput').mockImplementation(() => []);
       const getMiddleMock = jest.spyOn(selectTestsHelper, 'getMiddle').mockImplementation(() => 42);
-      // tslint:disable-next-line
-      promptHelper.promptTests({
+      void promptHelper.promptTests({
         promptObjects,
         testChoiceNumberPath: '',
         selectedFeatureChangedFromLastRun: true,
@@ -188,8 +185,7 @@ describe(`prompt helper`, () => {
     it(`sets cursor to middle option if selected a different feature from last run`, () => {
       jest.spyOn(fsHelper, 'readRememberedInput').mockImplementation(() => ['1']);
       const getMiddleMock = jest.spyOn(selectTestsHelper, 'getMiddle').mockImplementation(() => 42);
-      // tslint:disable-next-line
-      promptHelper.promptTests({
+      void promptHelper.promptTests({
         promptObjects,
         testChoiceNumberPath: '',
         selectedFeatureChangedFromLastRun: true,
@@ -201,8 +197,7 @@ describe(`prompt helper`, () => {
     it(`sets cursor to remembered input if same feature is chosen`, () => {
       jest.spyOn(fsHelper, 'readRememberedInput').mockImplementation(() => ['18']);
       const getMiddleMock = jest.spyOn(selectTestsHelper, 'getMiddle').mockImplementation(() => 0);
-      // tslint:disable-next-line
-      promptHelper.promptTests({
+      void promptHelper.promptTests({
         promptObjects,
         testChoiceNumberPath: '',
         selectedFeatureChangedFromLastRun: false,
@@ -214,8 +209,7 @@ describe(`prompt helper`, () => {
     it(`sets cursor to middle of remembered inputs if same feature is chosen`, () => {
       jest.spyOn(fsHelper, 'readRememberedInput').mockImplementation(() => ['1', '3', '7']);
       const getMiddleMock = jest.spyOn(selectTestsHelper, 'getMiddle').mockImplementation(() => 1);
-      // tslint:disable-next-line
-      promptHelper.promptTests({
+      void promptHelper.promptTests({
         promptObjects,
         testChoiceNumberPath: '',
         selectedFeatureChangedFromLastRun: false,
@@ -226,8 +220,7 @@ describe(`prompt helper`, () => {
 
     it(`writes selected tests`, () => {
       const writeSelectedTestsMock = jest.spyOn(fsHelper, 'writeSelectedTests').mockImplementation(() => null);
-      // tslint:disable-next-line
-      promptHelper.promptTests(
+      void promptHelper.promptTests(
         {promptObjects, testChoiceNumberPath: 'path', selectedFeatureChangedFromLastRun: false});
       testsEventEmitter.emit('submit', promptObjects);
       expect(writeSelectedTestsMock).toBeCalledWith({items: promptObjects, testChoiceNumberPath: 'path'});
@@ -235,8 +228,7 @@ describe(`prompt helper`, () => {
 
     it(`Logs choices`, () => {
       const logChoicesMock = jest.spyOn(selectTestsHelper, 'logChoices').mockImplementation(() => null);
-      // tslint:disable-next-line
-      promptHelper.promptTests(
+      void promptHelper.promptTests(
         {promptObjects, testChoiceNumberPath: '', selectedFeatureChangedFromLastRun: false});
       testsEventEmitter.emit('submit', promptObjects);
       expect(consoleInfoMock).toBeCalledWith(`Running tests: `);
@@ -265,8 +257,7 @@ describe(`prompt helper`, () => {
 
     it(`exits on abort`, () => {
       const processMock = jest.spyOn(process, 'exit').mockImplementation(() => null);
-      // tslint:disable-next-line
-      promptHelper.promptTests({
+      void promptHelper.promptTests({
         promptObjects,
         testChoiceNumberPath: '',
         selectedFeatureChangedFromLastRun: false,

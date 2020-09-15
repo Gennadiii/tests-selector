@@ -69,7 +69,7 @@ export const selectTestsHelper = {
     return {nestingLevel: index + 1, testsDirPath: result};
   },
 
-  logChoices(items) {
+  logChoices(items: string[]): void {
     console.info('');
     items.forEach(item => console.info(item));
     console.info('');
@@ -90,7 +90,7 @@ export const selectTestsHelper = {
     return Math.floor(arr.length / 2);
   },
 
-  shouldPromptFeature(path, maxFilesInDir) {
+  shouldPromptFeature(path: string, maxFilesInDir: number): boolean {
     return fsHelper.getFilesRecursively(path).length > maxFilesInDir && fsHelper.isAllContentDirectories(path);
   },
 };
@@ -126,4 +126,3 @@ interface selectedFeatureChangedFromLastInputInterface {
   index: number;
   featureChoiceNumberPath: string;
 }
-
