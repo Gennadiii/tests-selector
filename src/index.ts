@@ -1,6 +1,6 @@
 import fs from "fs";
 import {selectTestsHelper} from "./helpers/selectTests.helper";
-import {testsSelectorConstructorInterface} from "./index.interface";
+import {configInterface, testsSelectorConstructorInterface} from "./index.interface";
 
 
 export = class TestsSelector {

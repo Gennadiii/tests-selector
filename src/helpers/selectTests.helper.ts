@@ -11,7 +11,6 @@ export const selectTestsHelper = {
     const {specIdentifiers, specsPath, featureChoiceNumberPath, testChoiceNumberPath, maxFilesInDir} = params;
     try {
       const {testsDirPath, nestingLevel} = await this.getTestsDirPath({
-        pathToSelectedFeature: specsPath,
         featureChoiceNumberPath,
         maxFilesInDir,
         specsPath,
@@ -40,21 +39,24 @@ export const selectTestsHelper = {
 
   async getTestsDirPath(params: getTestsDirPathInterface):
     Promise<{testsDirPath: string, nestingLevel: number}> {
-    const {pathToSelectedFeature, maxFilesInDir, featureChoiceNumberPath, specsPath, index = 0} = params;
+    const {specsPath, pathToSelectedFeature = specsPath, maxFilesInDir, featureChoiceNumberPath, index = 0} = params;
     const features = fsHelper.getFeatures(pathToSelectedFeature);
     const featurePromptOptions = promptHelper.getPromptObjects({options: features, specsPath});
-    const selectedFeature = await promptHelper.promptFeature({
-      options: featurePromptOptions,
-      featureChoiceNumberPath,
-      index,
-      selectedFeatureChangedFromLastRun
-    });
+    const selectedFeature = this.shouldPromptFeature(pathToSelectedFeature, maxFilesInDir)
+      ? await promptHelper.promptFeature({
+        options: featurePromptOptions,
+        featureChoiceNumberPath,
+        index,
+        selectedFeatureChangedFromLastRun
+      })
+      : '';
     selectedFeatureChangedFromLastRun = this.hasSelectedFeatureChangedFromLastInput({
       features, selectedFeature, index, featureChoiceNumberPath
     });
+    selectedFeatureChangedFromLastRun &&
     fsHelper.writeSelectedFeature({features, selectedFeature, index, featureChoiceNumberPath});
     const result = `${pathToSelectedFeature}/${selectedFeature}`;
-    if (fsHelper.getFilesRecursively(result).length > maxFilesInDir && fsHelper.isAllContentDirectories(result)) {
+    if (this.shouldPromptFeature(result, maxFilesInDir)) {
       return this.getTestsDirPath({
         pathToSelectedFeature: result,
         featureChoiceNumberPath,
@@ -87,6 +89,10 @@ export const selectTestsHelper = {
   getMiddle(arr: promptObjectInterface[] | string[]): number {
     return Math.floor(arr.length / 2);
   },
+
+  shouldPromptFeature(path, maxFilesInDir) {
+    return fsHelper.getFilesRecursively(path).length > maxFilesInDir && fsHelper.isAllContentDirectories(path);
+  },
 };
 
 
@@ -100,7 +106,7 @@ export interface selectTestsInterface {
 
 
 interface getTestsDirPathInterface {
-  pathToSelectedFeature: string;
+  pathToSelectedFeature?: string;
   featureChoiceNumberPath: string;
   maxFilesInDir: number;
   index?: number;
