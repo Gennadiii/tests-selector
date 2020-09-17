@@ -1,14 +1,13 @@
 import fs from "fs";
 import {selectTestsHelper} from "./helpers/selectTests.helper";
-import {configInterface, testsSelectorConstructorInterface} from "./index.interface";
+import {IConfigInterface, ITestsSelectorConstructorInterface} from "./index.interface";
 
 
 export = class TestsSelector {
 
-  // @ts-ignore
-  config: configInterface = {};
+  public config: IConfigInterface;
 
-  constructor(params: testsSelectorConstructorInterface = {}) {
+  constructor(params: ITestsSelectorConstructorInterface = {}) {
     const {
       tempDataPath = `${process.cwd()}/.testsSelector`,
       selectedTestsFileName = `selectedTests.generated`,
@@ -18,13 +17,15 @@ export = class TestsSelector {
       testChoiceNumberFileName = `testChoiceNumber.indexHelper`,
       featureChoiceNumberFileName = `featureChoiceNumber.indexHelper`,
     } = params;
-    this.config.tempDataPath = tempDataPath;
-    this.config.selectedTestsFilePath = `${tempDataPath}/${selectedTestsFileName}`;
-    this.config.specIdentifiers = specIdentifiers;
-    this.config.specsPath = specsPath;
-    this.config.maxFilesInDir = maxFilesInDir;
-    this.config.testChoiceNumberPath = `${tempDataPath}/${testChoiceNumberFileName}`;
-    this.config.featureChoiceNumberPath = `${tempDataPath}/${featureChoiceNumberFileName}`;
+    this.config = {
+      specIdentifiers,
+      specsPath,
+      maxFilesInDir,
+      tempDataPath: tempDataPath,
+      selectedTestsFilePath: `${tempDataPath}/${selectedTestsFileName}`,
+      testChoiceNumberPath: `${tempDataPath}/${testChoiceNumberFileName}`,
+      featureChoiceNumberPath: `${tempDataPath}/${featureChoiceNumberFileName}`
+    };
   }
 
 

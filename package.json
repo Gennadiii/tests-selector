@@ -25,7 +25,8 @@
   "keywords": [
     "test",
     "cli",
-    "selector"
+    "selector",
+    "prompt"
   ],
   "files": [
     "dist/**/*"

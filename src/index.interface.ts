@@ -1,4 +1,4 @@
-export interface testsSelectorConstructorInterface {
+export interface ITestsSelectorConstructorInterface {
   tempDataPath?: string;
   selectedTestsFileName?: string;
   specsPath?: string;
@@ -9,7 +9,7 @@ export interface testsSelectorConstructorInterface {
 }
 
 
-export interface configInterface {
+export interface IConfigInterface {
   tempDataPath: string;
   testChoiceNumberPath: string;
   featureChoiceNumberPath: string;
