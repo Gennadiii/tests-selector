@@ -4,10 +4,10 @@ Contributing
 - Clone the fork on your local machine. Your remote repo on Github is called `origin`.
 - Add the original repository as a remote called `upstream`.
 ```
-git remote add upstream https://github.com/potapovDim/interface-webdriver
+git remote add upstream https://github.com/potapovDim/tests-selector
 git remote -v
-upstream        https://github.com/potapovDim/interface-webdriver (fetch)
-upstream        https://github.com/potapovDim/interface-webdriver (push)
+upstream        https://github.com/potapovDim/tests-selector (fetch)
+upstream        https://github.com/potapovDim/tests-selector (push)
 ```
 - If you created your fork a while ago be sure to pull upstream changes into your local repository.
 ```

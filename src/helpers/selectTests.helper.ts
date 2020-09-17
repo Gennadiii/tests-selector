@@ -7,7 +7,7 @@ let testsPaths = null;
 
 
 export const selectTestsHelper = {
-  async selectTests(params: selectTestsInterface): Promise<string[]> {
+  async selectTests(params: ISelectTestsInterface): Promise<string[]> {
     const {specIdentifiers, specsPath, featureChoiceNumberPath, testChoiceNumberPath, maxFilesInDir} = params;
     try {
       const {testsDirPath, nestingLevel} = await this.getTestsDirPath({
@@ -37,7 +37,7 @@ export const selectTestsHelper = {
     }
   },
 
-  async getTestsDirPath(params: getTestsDirPathInterface):
+  async getTestsDirPath(params: IGetTestsDirPathInterface):
     Promise<{testsDirPath: string, nestingLevel: number}> {
     const {specsPath, pathToSelectedFeature = specsPath, maxFilesInDir, featureChoiceNumberPath, index = 0} = params;
     const features = fsHelper.getFeatures(pathToSelectedFeature);
@@ -75,13 +75,13 @@ export const selectTestsHelper = {
     console.info('');
   },
 
-  hasSelectedFeatureChangedFromLastInput(params: selectedFeatureChangedFromLastInputInterface): boolean {
+  hasSelectedFeatureChangedFromLastInput(params: ISelectedFeatureChangedFromLastInputInterface): boolean {
     const {featureChoiceNumberPath, features, index, selectedFeature} = params;
     return features.indexOf(selectedFeature) !==
       Number(fsHelper.readRememberedInput(featureChoiceNumberPath + index)[0]);
   },
 
-  isSpec(params: filterSpecsInterface): boolean {
+  isSpec(params: IFilterSpecsInterface): boolean {
     const {testPath, specIdentifiers} = params;
     return specIdentifiers.some(specIdentifier => testPath.includes(`.${specIdentifier}.`));
   },
@@ -96,7 +96,7 @@ export const selectTestsHelper = {
 };
 
 
-export interface selectTestsInterface {
+export interface ISelectTestsInterface {
   specsPath: string;
   specIdentifiers: string[];
   testChoiceNumberPath: string;
@@ -105,7 +105,7 @@ export interface selectTestsInterface {
 }
 
 
-interface getTestsDirPathInterface {
+interface IGetTestsDirPathInterface {
   pathToSelectedFeature?: string;
   featureChoiceNumberPath: string;
   maxFilesInDir: number;
@@ -114,13 +114,13 @@ interface getTestsDirPathInterface {
 }
 
 
-interface filterSpecsInterface {
+interface IFilterSpecsInterface {
   testPath: string;
   specIdentifiers: string[];
 }
 
 
-interface selectedFeatureChangedFromLastInputInterface {
+interface ISelectedFeatureChangedFromLastInputInterface {
   features: string[];
   selectedFeature: string;
   index: number;
