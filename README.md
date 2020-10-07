@@ -18,12 +18,12 @@ Tests selector returns an array of selected tests paths. If you use framework li
 
 ```specsSelector.js```
 ```
-const SpecsSelector = require('../../dist/index').default;
+const TestsSelector = require('tests-selector').;
 
 
 if (require.main === module) {
   void async function () {
-    const specsSelector = new SpecsSelector({
+    const specsSelector = new TestsSelector({
       specsPath: `${process.cwd()}/test/specs`,
       specIdentifiers: ['spec', 'e2e'],
     });
@@ -49,6 +49,7 @@ if (require.main === module) {
 0. Remembers your choices. Just press enter a couple of times to run your previous tests.
 0. Filters your tests by preset identifier.
 0. Sets cursor to middle position for faster navigation.
+0. Press Esc ot Ctrl+C to go 1 directory back
 
 ### Available options
 
@@ -74,6 +75,7 @@ TestsSelector instance also provide
 - 1.1.5 - got rid of "default" when importing with JS
 - 1.1.6 - support for 0 nesting level tests
 - 1.1.7 - contributing guide
+- 2.0.0 - Go back feature
 
 ##Contributing
   

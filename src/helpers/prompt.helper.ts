@@ -7,6 +7,7 @@ import {selectTestsHelper} from "./selectTests.helper";
 export const promptHelper = {
   prompt,
   multiPrompt,
+  back: Date.now().toString(),
 
   getPromptObjects(params: getPromptObjectsInterface): promptObjectInterface[] {
     const {options, specsPath, nestingLevel} = params;
@@ -35,7 +36,7 @@ export const promptHelper = {
       console.info('Press esc to exit');
       this.prompt('Select feature:', options, {cursor})
         .on('submit', resolve)
-        .on('abort', () => process.exit(0));
+        .on('abort', () => resolve(this.back));
     });
   },
 
@@ -58,7 +59,7 @@ export const promptHelper = {
           selectTestsHelper.logChoices(chosenItemsValues);
           resolve(chosenItemsValues);
         })
-        .on('abort', () => process.exit(0));
+        .on('abort', () => resolve([this.back]));
     });
   },
 
