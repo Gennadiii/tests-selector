@@ -1,6 +1,6 @@
 {
   "name": "tests-selector",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Makes it easy to select tests for local test runs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,7 +29,7 @@
     "prompt"
   ],
   "files": [
-    "dist/**/*"
+    "dist/src/**/*"
   ],
   "dependencies": {
     "multiselect-prompt": "0.3.2",
