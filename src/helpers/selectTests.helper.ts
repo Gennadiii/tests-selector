@@ -7,54 +7,78 @@ let testsPaths = null;
 
 
 export const selectTestsHelper = {
+  nestingLevel: 0,
+  testsDirParamsStack: [],
+
   async selectTests(params: ISelectTestsInterface): Promise<string[]> {
-    const {specIdentifiers, specsPath, featureChoiceNumberPath, testChoiceNumberPath, maxFilesInDir} = params;
+    const {
+      specIdentifiers,
+      specsPath,
+      specsEntryPoint = specsPath,
+      featureChoiceNumberPath,
+      testChoiceNumberPath,
+      maxFilesInDir,
+    } = params;
     try {
-      const {testsDirPath, nestingLevel} = await this.getTestsDirPath({
+      const {testsDirPath} = await this.getTestsDirPath({
         featureChoiceNumberPath,
         maxFilesInDir,
-        specsPath,
+        specsEntryPoint,
+        pathToSelectedFeature: specsEntryPoint,
       });
       testsPaths = fsHelper.getFilesRecursively(testsDirPath)
         .filter(testPath => this.isSpec({specIdentifiers, testPath}));
       const promptObjects = promptHelper.getPromptObjects({
         options: testsPaths,
-        nestingLevel, specsPath
+        nestingLevel: this.nestingLevel, specsPath
       });
       const preselectedPromptObjects = promptHelper.preselectLastInput({
         promptObjects,
         testChoiceNumberPath,
         selectedFeatureChangedFromLastRun,
       });
-      return await promptHelper.promptTests({
+      const selectedTests = await promptHelper.promptTests({
         promptObjects: preselectedPromptObjects,
         testChoiceNumberPath,
         selectedFeatureChangedFromLastRun,
       });
+      if (selectedTests[0] === promptHelper.back) {
+        this.nestingLevel--;
+        const testsDirParams = this.testsDirParamsStack.pop();
+        return this.selectTests({
+          ...params,
+          specsEntryPoint: testsDirParams.pathToSelectedFeature,
+        });
+      }
+      return selectedTests;
     } catch (err) {
       console.error(`Can't start tests: ${err}`);
       throw err;
     }
   },
 
-  async getTestsDirPath(params: IGetTestsDirPathInterface):
-    Promise<{testsDirPath: string, nestingLevel: number}> {
-    const {specsPath, pathToSelectedFeature = specsPath, maxFilesInDir, featureChoiceNumberPath, index = 0} = params;
+  async getTestsDirPath(params: IGetTestsDirPathInterface): Promise<{testsDirPath: string}> {
+    const {specsPath, pathToSelectedFeature, maxFilesInDir, featureChoiceNumberPath} = params;
+    this.nestingLevel++;
     const features = fsHelper.getFeatures(pathToSelectedFeature);
     const featurePromptOptions = promptHelper.getPromptObjects({options: features, specsPath});
     const selectedFeature = this.shouldPromptFeature(pathToSelectedFeature, maxFilesInDir)
       ? await promptHelper.promptFeature({
         options: featurePromptOptions,
         featureChoiceNumberPath,
-        index,
+        index: this.nestingLevel,
         selectedFeatureChangedFromLastRun
       })
       : '';
+    if (selectedFeature === promptHelper.back) {
+      return this.getTestsDirPathForChangedNestingLevel(params);
+    }
+    this.testsDirParamsStack.push(params);
     selectedFeatureChangedFromLastRun = this.hasSelectedFeatureChangedFromLastInput({
-      features, selectedFeature, index, featureChoiceNumberPath
+      features, selectedFeature, index: this.nestingLevel, featureChoiceNumberPath
     });
     selectedFeatureChangedFromLastRun &&
-    fsHelper.writeSelectedFeature({features, selectedFeature, index, featureChoiceNumberPath});
+    fsHelper.writeSelectedFeature({features, selectedFeature, index: this.nestingLevel, featureChoiceNumberPath});
     const result = `${pathToSelectedFeature}/${selectedFeature}`;
     if (this.shouldPromptFeature(result, maxFilesInDir)) {
       return this.getTestsDirPath({
@@ -62,11 +86,10 @@ export const selectTestsHelper = {
         featureChoiceNumberPath,
         maxFilesInDir,
         specsPath,
-        index: index + 1,
         selectedFeatureChangedFromLastRun,
       });
     }
-    return {nestingLevel: index + 1, testsDirPath: result};
+    return {testsDirPath: result};
   },
 
   logChoices(items: string[]): void {
@@ -93,11 +116,21 @@ export const selectTestsHelper = {
   shouldPromptFeature(path: string, maxFilesInDir: number): boolean {
     return fsHelper.getFilesRecursively(path).length > maxFilesInDir && fsHelper.isAllContentDirectories(path);
   },
+
+  async getTestsDirPathForChangedNestingLevel(originalParams: IGetTestsDirPathInterface):
+    Promise<{testsDirPath: string}> {
+    this.nestingLevel = (this.testsDirParamsStack.length
+      ? this.nestingLevel - 2
+      : this.nestingLevel - 1);
+    const previousParams = this.testsDirParamsStack.pop() || originalParams;
+    return this.getTestsDirPath(previousParams);
+  },
 };
 
 
 export interface ISelectTestsInterface {
   specsPath: string;
+  specsEntryPoint?: string;
   specIdentifiers: string[];
   testChoiceNumberPath: string;
   featureChoiceNumberPath: string;
@@ -106,10 +139,9 @@ export interface ISelectTestsInterface {
 
 
 interface IGetTestsDirPathInterface {
-  pathToSelectedFeature?: string;
+  pathToSelectedFeature: string;
   featureChoiceNumberPath: string;
   maxFilesInDir: number;
-  index?: number;
   specsPath: string;
 }
 

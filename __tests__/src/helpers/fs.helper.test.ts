@@ -158,16 +158,19 @@ describe(`fs helper`, () => {
 
   describe(`getFeatures`, () => {
     it(`returns only features`, () => {
+      // eslint-disable-next-line
       // @ts-ignore
       jest.spyOn(fs, 'readdirSync').mockImplementation(() => [
         `folder1`,
         `file.spec.ts`,
       ]);
       const statSyncMock = jest.spyOn(fs, 'statSync')
+        // eslint-disable-next-line
         // @ts-ignore
         .mockImplementationOnce(() => ({
           isDirectory: () => true,
         }))
+        // eslint-disable-next-line
         // @ts-ignore
         .mockImplementationOnce(() => ({
           isDirectory: () => false,

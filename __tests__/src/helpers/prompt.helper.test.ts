@@ -117,18 +117,18 @@ describe(`prompt helper`, () => {
       done();
     });
 
-    it(`exits on abort`, async done => {
+    it(`resolves with 'back' sign on abort`, async done => {
       jest.spyOn(fsHelper, 'readRememberedInput').mockImplementation(() => ['1']);
       jest.spyOn(selectTestsHelper, 'getMiddle').mockImplementation(() => 42);
-      const processMock = jest.spyOn(process, 'exit').mockImplementation(() => null);
-      void promptHelper.promptFeature({
+      promptHelper.back = 'back';
+      const featurePrompt = promptHelper.promptFeature({
         options: [],
         index: 0,
         featureChoiceNumberPath: '',
         selectedFeatureChangedFromLastRun: true,
       });
       featureEventEmitter.emit('abort');
-      expect(processMock).toBeCalledWith(0);
+      expect(await featurePrompt).toEqual(promptHelper.back);
       done();
     });
   });
@@ -255,15 +255,15 @@ describe(`prompt helper`, () => {
       done();
     });
 
-    it(`exits on abort`, () => {
-      const processMock = jest.spyOn(process, 'exit').mockImplementation(() => null);
-      void promptHelper.promptTests({
-        promptObjects,
-        testChoiceNumberPath: '',
-        selectedFeatureChangedFromLastRun: false,
-      });
+    it(`resolves with 'back' sign on abort`, async done => {
+      const prompt = promptHelper.promptTests(
+        {promptObjects, testChoiceNumberPath: '', selectedFeatureChangedFromLastRun: false});
+      const notSelectedPromptObjects = {...promptObjects};
+      notSelectedPromptObjects[1].selected = false;
       testsEventEmitter.emit('abort');
-      expect(processMock).toBeCalledWith(0);
+      promptHelper.back = 'back';
+      expect(await prompt).toEqual([promptHelper.back]);
+      done();
     });
   });
 
