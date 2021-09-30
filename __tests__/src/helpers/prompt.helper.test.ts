@@ -183,12 +183,27 @@ describe(`prompt helper`, () => {
       {
         selected: false,
         title: 'test1',
-        value: 'test1,'
+        value: 'test1',
       },
       {
         selected: true,
         title: 'test2',
-        value: 'test2,'
+        value: 'test2',
+      },
+      {
+        selected: true,
+        title: 'test3',
+        value: 'test3',
+      },
+      {
+        selected: true,
+        title: 'test4',
+        value: 'test4',
+      },
+      {
+        selected: true,
+        title: 'test5',
+        value: 'test5',
       },
     ];
     let consoleInfoMock = null;
@@ -238,27 +253,39 @@ describe(`prompt helper`, () => {
     });
 
     it(`sets cursor to remembered input if same feature is chosen`, () => {
-      jest.spyOn(fsHelper, 'readRememberedInput').mockImplementation(() => ['18']);
+      jest.spyOn(fsHelper, 'readRememberedInput').mockImplementation(() => ['1']);
       const getMiddleMock = jest.spyOn(selectTestsHelper, 'getMiddle').mockImplementation(() => 0);
       void promptHelper.promptTests({
         promptObjects,
         testChoiceNumberPath: '',
         selectedFeatureChangedFromLastRun: false,
       });
-      expect(getMiddleMock).toBeCalledWith(['18']);
-      expect(promptMock).toBeCalledWith('Select tests to run: ', promptObjects, {cursor: '18'});
+      expect(getMiddleMock).toBeCalledWith(['1']);
+      expect(promptMock).toBeCalledWith('Select tests to run: ', promptObjects, {cursor: '1'});
     });
 
     it(`sets cursor to middle of remembered inputs if same feature is chosen`, () => {
-      jest.spyOn(fsHelper, 'readRememberedInput').mockImplementation(() => ['1', '3', '7']);
+      jest.spyOn(fsHelper, 'readRememberedInput').mockImplementation(() => ['1', '3', '4']);
       const getMiddleMock = jest.spyOn(selectTestsHelper, 'getMiddle').mockImplementation(() => 1);
       void promptHelper.promptTests({
         promptObjects,
         testChoiceNumberPath: '',
         selectedFeatureChangedFromLastRun: false,
       });
-      expect(getMiddleMock).toBeCalledWith(['1', '3', '7']);
+      expect(getMiddleMock).toBeCalledWith(['1', '3', '4']);
       expect(promptMock).toBeCalledWith('Select tests to run: ', promptObjects, {cursor: '3'});
+    });
+
+    it(`sets cursor to middle if one of remembered input is bigger than options length`, () => {
+      jest.spyOn(fsHelper, 'readRememberedInput').mockImplementation(() => ['1', '3', '4', '42']);
+      const getMiddleMock = jest.spyOn(selectTestsHelper, 'getMiddle').mockImplementation(() => 1);
+      void promptHelper.promptTests({
+        promptObjects,
+        testChoiceNumberPath: '',
+        selectedFeatureChangedFromLastRun: false,
+      });
+      expect(getMiddleMock).toBeCalledWith(promptObjects);
+      expect(promptMock).toBeCalledWith('Select tests to run: ', promptObjects, {cursor: 1});
     });
 
     it(`writes selected tests`, () => {

@@ -45,7 +45,9 @@ export const promptHelper = {
     console.info(`Choose nothing to go with everything`);
     return new Promise(resolve => {
       const rememberedInput = fsHelper.readRememberedInput(testChoiceNumberPath);
-      const cursor = selectedFeatureChangedFromLastRun || rememberedInput.length === 0
+      const cursor = selectedFeatureChangedFromLastRun ||
+      rememberedInput.length === 0 ||
+      Number([...rememberedInput].pop()) > promptObjects.length
         ? selectTestsHelper.getMiddle(promptObjects)
         : rememberedInput[selectTestsHelper.getMiddle(rememberedInput)];
       this.multiPrompt('Select tests to run: ', promptObjects, {cursor})
