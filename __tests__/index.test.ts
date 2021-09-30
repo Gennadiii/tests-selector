@@ -13,6 +13,7 @@ const config = {
   featureChoiceNumberFileName: `featureChoiceNumber.indexHelper`,
   testChoiceNumberFileName: `testChoiceNumber.indexHelper`,
 };
+const tempDataPath = `${config.tempDataPath}/.testsSelector`;
 const testsSelector = new TestsSelector(config);
 const featureEventEmitter = new events.EventEmitter();
 const testsEventEmitter = new events.EventEmitter();
@@ -46,7 +47,6 @@ const specs = {
 
 describe(`index`, () => {
   describe(`default parameters`, () => {
-
     it(`checks default parameters`, () => {
       const tempDataPath = `${process.cwd()}/.testsSelector`;
       expect(new TestsSelector().config).toEqual({
@@ -72,15 +72,15 @@ describe(`index`, () => {
       const existsSyncMock = jest.spyOn(fs, 'existsSync').mockImplementation(() => false);
       const writeFileSyncMock = jest.spyOn(fs, 'mkdirSync').mockImplementation(() => null);
       void testsSelector.selectTests();
-      expect(existsSyncMock).toBeCalledWith(config.tempDataPath);
-      expect(writeFileSyncMock).toBeCalledWith(config.tempDataPath, {recursive: true});
+      expect(existsSyncMock).toBeCalledWith(tempDataPath);
+      expect(writeFileSyncMock).toBeCalledWith(tempDataPath, {recursive: true});
     });
 
     it(`doesn't create temp dir if it already exists`, () => {
       const existsSyncMock = jest.spyOn(fs, 'existsSync').mockImplementation(() => true);
       const writeFileSyncMock = jest.spyOn(fs, 'mkdirSync').mockImplementation(() => null);
       void testsSelector.selectTests();
-      expect(existsSyncMock).toBeCalledWith(config.tempDataPath);
+      expect(existsSyncMock).toBeCalledWith(tempDataPath);
       expect(writeFileSyncMock).not.toBeCalled();
     });
   });
@@ -92,7 +92,7 @@ describe(`index`, () => {
       const stringifyMock = jest.spyOn(JSON, 'parse')
         .mockImplementation(() => "[\"path/someTest.spec.js\"]");
       const result = testsSelector.getTestsFromFile();
-      expect(readFileMock).toBeCalledWith(`${config.tempDataPath}/${config.selectedTestsFileName}`);
+      expect(readFileMock).toBeCalledWith(`${tempDataPath}/${config.selectedTestsFileName}`);
       expect(stringifyMock).toBeCalledWith("[\"path/someTest.spec.js\"]");
       expect(result).toEqual("[\"path/someTest.spec.js\"]");
     });
@@ -104,6 +104,7 @@ describe(`e2e`, () => {
   void beforeEach(() => {
     jest.restoreAllMocks();
     jest.spyOn(console, 'info').mockImplementation(() => null);
+    jest.spyOn(console, 'error').mockImplementation(() => null);
     jest.spyOn(promptHelper, 'prompt').mockImplementation(() => featureEventEmitter);
     jest.spyOn(promptHelper, 'multiPrompt').mockImplementation(() => testsEventEmitter);
   });
@@ -117,14 +118,43 @@ describe(`e2e`, () => {
       ]
     });
     expect(await selection).toEqual([specs.feature1[1]]);
-    expect(removeSlashes(fs.readFileSync(`${config.tempDataPath}/${config.selectedTestsFileName}`).toString()))
+    expect(removeSlashes(fs.readFileSync(`${tempDataPath}/${config.selectedTestsFileName}`).toString()))
       .toEqual(`["${removeSlashes(specs.feature1[1])}"]`);
     done();
   });
 
+  it(`retries tests selection with deleting temp files`, async done => {
+    const selectTestsMock = jest.spyOn(selectTestsHelper, 'selectTests');
+    const mkDirMock = jest.spyOn(fs, 'mkdirSync');
+    jest.spyOn(selectTestsHelper, 'getTestsDirPath').mockImplementationOnce(() => {
+      throw new Error('Some error');
+    });
+    fs.existsSync(tempDataPath) && fs.rmdirSync(tempDataPath, {recursive: true});
+    const selection = testsSelector.selectTests();
+    await simulateChoices({
+      feature: 'feature1', tests: [
+        {selected: false, value: specs.feature1[0]},
+        {selected: true, value: specs.feature1[1]},
+      ]
+    });
+    expect(await selection).toEqual([specs.feature1[1]]);
+    expect(selectTestsMock).toBeCalledTimes(2);
+    expect(mkDirMock).toHaveBeenNthCalledWith(1, tempDataPath, {"recursive": true});
+    expect(mkDirMock).toHaveBeenNthCalledWith(2, tempDataPath, {"recursive": true});
+    done();
+  });
+
+  it(`retries tests selection just ones`, async done => {
+    jest.spyOn(selectTestsHelper, 'getTestsDirPath').mockImplementation(() => {
+      throw new Error('Some error');
+    });
+    await expect(testsSelector.selectTests()).rejects.toThrow('Some error');
+    done();
+  });
+
   it(`selects multiple tests from different feature`, async done => {
-    fs.writeFileSync(`${config.tempDataPath}/${config.featureChoiceNumberFileName + 0}`, '2');
-    fs.writeFileSync(`${config.tempDataPath}/${config.testChoiceNumberFileName}`, '0');
+    fs.writeFileSync(`${tempDataPath}/${config.featureChoiceNumberFileName + 0}`, '2');
+    fs.writeFileSync(`${tempDataPath}/${config.testChoiceNumberFileName}`, '0');
     const selection = testsSelector.selectTests();
     await simulateChoices({
       feature: 'feature2', subFeature: 'subFeature1', tests: [
@@ -134,7 +164,7 @@ describe(`e2e`, () => {
       ]
     });
     expect(await selection).toEqual([specs.feature2.subFeature1[1], specs.feature2.subFeature1[2]]);
-    expect(removeSlashes(fs.readFileSync(`${config.tempDataPath}/${config.selectedTestsFileName}`).toString()))
+    expect(removeSlashes(fs.readFileSync(`${tempDataPath}/${config.selectedTestsFileName}`).toString()))
       .toEqual(`["${removeSlashes(specs.feature2.subFeature1[1])}","${removeSlashes(specs.feature2.subFeature1[2])}"]`);
     done();
   });
