@@ -1,6 +1,6 @@
 {
   "name": "tests-selector",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Makes it easy to select tests for local test runs",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
