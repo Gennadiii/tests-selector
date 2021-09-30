@@ -75,15 +75,58 @@ describe(`prompt helper`, () => {
 
     it(`sets cursor to remembered input if it exists and selected feature didn't change from last time`, async done => {
       jest.spyOn(fsHelper, 'readRememberedInput').mockImplementation(() => ['1']);
+      const options = [
+        {
+          title: 'option1',
+          value: 'option1',
+          selected: false,
+        },
+        {
+          title: 'option2',
+          value: 'option2',
+          selected: false,
+        },
+      ];
       const featurePrompt = promptHelper.promptFeature({
-        options: [],
+        options,
         index: 0,
         featureChoiceNumberPath: '',
         selectedFeatureChangedFromLastRun: false,
       });
       featureEventEmitter.emit('submit', '');
       await featurePrompt;
-      expect(promptMock).toBeCalledWith('Select feature:', [], {cursor: 1});
+      expect(promptMock).toBeCalledWith('Select feature:', options, {cursor: 1});
+      done();
+    });
+
+    it(`sets cursor to middle position if remembered input is bigger than options length`, async done => {
+      jest.spyOn(fsHelper, 'readRememberedInput').mockImplementation(() => ['3']);
+      const options = [
+        {
+          title: 'option1',
+          value: 'option1',
+          selected: false,
+        },
+        {
+          title: 'option2',
+          value: 'option2',
+          selected: false,
+        },
+        {
+          title: 'option3',
+          value: 'option3',
+          selected: false,
+        },
+      ];
+      const featurePrompt = promptHelper.promptFeature({
+        options,
+        index: 0,
+        featureChoiceNumberPath: '',
+        selectedFeatureChangedFromLastRun: false,
+      });
+      featureEventEmitter.emit('submit', '');
+      await featurePrompt;
+      expect(promptMock).toBeCalledWith('Select feature:', options, {cursor: 1});
       done();
     });
 

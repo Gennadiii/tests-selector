@@ -30,7 +30,7 @@ export const promptHelper = {
     const {featureChoiceNumberPath, index, options, selectedFeatureChangedFromLastRun} = params;
     return new Promise(resolve => {
       const rememberedInput = Number(fsHelper.readRememberedInput(featureChoiceNumberPath + index)[0]);
-      const cursor = !selectedFeatureChangedFromLastRun && rememberedInput >= 0
+      const cursor = !selectedFeatureChangedFromLastRun && rememberedInput >= 0 && rememberedInput <= options.length - 1
         ? rememberedInput
         : selectTestsHelper.getMiddle(options);
       console.info('Press esc to exit');
